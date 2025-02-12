@@ -1,32 +1,41 @@
 package com.example.bookmarkmanager.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.bookmarkmanager.dto.CommonApiResponse;
+import com.example.bookmarkmanager.model.BookMark;
+import com.example.bookmarkmanager.service.BookMarkService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/bookmark")
+@RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class BookMarkController {
 
-    @PostMapping("/add")
-    public String addBookmark() {
-        return "Bookmark added successfully";
+    private final BookMarkService bookMarkService;
+
+    @GetMapping("/bookmarks")
+    public ResponseEntity<CommonApiResponse> getBookmark() {
+        try {
+            return ResponseEntity.ok(CommonApiResponse.builder().data(bookMarkService.getAllBookmarks()).build());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(CommonApiResponse.builder().error(e.getMessage()).build());
+        }
     }
 
-    @PostMapping("/delete")
-    public String deleteBookmark() {
-        return "Bookmark deleted successfully";
+    @PostMapping("/bookmarks")
+    public CommonApiResponse addBookmark(@RequestBody BookMark bookMark) {
+        return bookMarkService.addBookmark(bookMark);
     }
 
-    @PostMapping("/update")
-    public String updateBookmark() {
-        return "Bookmark updated successfully";
+    @DeleteMapping("/bookmarks/{id}")
+    public CommonApiResponse deleteBookmark(@PathVariable String id) {
+        return bookMarkService.deleteBookmark(id);
     }
 
-    @GetMapping("/get")
-    public String getBookmark() {
-        return "Bookmark retrieved successfully";
+    @PutMapping("/bookmarks/{id}")
+    public CommonApiResponse updateBookmark(@PathVariable String id) {
+        return bookMarkService.updateBookmark(id);
     }
 
 }
