@@ -1,14 +1,15 @@
 package com.example.bookmarkmanager.dto;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+
+import java.util.List;
+
+@Data
 @Builder
 public class CommonApiResponse {
     private String message;
-    private Object data;
+    private List<BookMark> data;
     private Object error;
 }

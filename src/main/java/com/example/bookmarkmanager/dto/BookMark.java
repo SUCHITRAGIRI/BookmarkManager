@@ -1,22 +1,21 @@
-package com.example.bookmarkmanager.model;
+package com.example.bookmarkmanager.dto;
+
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@RequiredArgsConstructor
-@ToString
-@AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class BookMark {
-    @NotBlank(message = "id is mandatory")
+
     private String id;
+
     @NotBlank(message = "url is mandatory")
     private String url;
+
     @NotBlank(message = "title is mandatory")
     private String title;
-    @NotBlank(message = "createdDate is mandatory")
-    private String createdDate;
-    private String description;
 
+    private String createdDate;
+
+    private String description;
 }

@@ -32,6 +32,7 @@ dependencies {
 	implementation("org.springframework:spring-web:6.2.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+	implementation("org.springframework.boot:spring-boot-starter-validation:3.4.2")
 }
 
 tasks.withType<Test> {

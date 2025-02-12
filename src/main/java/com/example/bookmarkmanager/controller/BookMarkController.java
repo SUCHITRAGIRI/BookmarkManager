@@ -1,9 +1,11 @@
 package com.example.bookmarkmanager.controller;
 
 import com.example.bookmarkmanager.dto.CommonApiResponse;
-import com.example.bookmarkmanager.model.BookMark;
+import com.example.bookmarkmanager.dto.BookMark;
 import com.example.bookmarkmanager.service.BookMarkService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,28 +16,24 @@ public class BookMarkController {
 
     private final BookMarkService bookMarkService;
 
-    @GetMapping("/bookmarks")
+    @GetMapping(value = "/bookmarks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommonApiResponse> getBookmark() {
-        try {
-            return ResponseEntity.ok(CommonApiResponse.builder().data(bookMarkService.getAllBookmarks()).build());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(CommonApiResponse.builder().error(e.getMessage()).build());
-        }
+        return bookMarkService.getAllBookmarks();
     }
 
-    @PostMapping("/bookmarks")
-    public CommonApiResponse addBookmark(@RequestBody BookMark bookMark) {
+    @PostMapping(value = "/bookmarks", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonApiResponse> addBookmark(@RequestBody @Valid BookMark bookMark) {
         return bookMarkService.addBookmark(bookMark);
     }
 
     @DeleteMapping("/bookmarks/{id}")
-    public CommonApiResponse deleteBookmark(@PathVariable String id) {
+    public ResponseEntity<CommonApiResponse> deleteBookmark(@PathVariable String id) {
         return bookMarkService.deleteBookmark(id);
     }
 
     @PutMapping("/bookmarks/{id}")
-    public CommonApiResponse updateBookmark(@PathVariable String id) {
-        return bookMarkService.updateBookmark(id);
+    public ResponseEntity<CommonApiResponse> updateBookmark(@PathVariable String id, @RequestBody BookMark bookMark) {
+        return bookMarkService.updateBookmark(id, bookMark);
     }
 
 }
