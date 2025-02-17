@@ -3,6 +3,8 @@ package com.example.bookmarkmanager.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import java.net.URL;
+import java.time.LocalDate;
 
 @Data
 public class BookMark {
@@ -10,12 +12,12 @@ public class BookMark {
     private String id;
 
     @NotBlank(message = "url is mandatory")
-    private String url;
+    private URL url;
 
     @NotBlank(message = "title is mandatory")
     private String title;
 
-    private String createdDate;
+    private LocalDate createdDate;
 
     private String description;
 }

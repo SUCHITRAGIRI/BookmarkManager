@@ -5,7 +5,7 @@ import com.example.bookmarkmanager.dto.BookMark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
+import java.time.LocalDate;
 import java.util.*;
 
 @Component
@@ -16,8 +16,10 @@ public class BookMarkService {
 
     public ResponseEntity<CommonApiResponse> addBookmark(BookMark bookMark) {
         try {
-            if (bookMark.getId() == null) bookMark.setId(UUID.randomUUID().toString());
-            bookMark.setCreatedDate(new Date().toString());
+            if (bookMark.getId() == null) {
+                bookMark.setId(UUID.randomUUID().toString());
+            }
+            bookMark.setCreatedDate(LocalDate.now());
             bookmarksList.add(bookMark);
             return ResponseEntity.ok(CommonApiResponse.builder()
                     .message("Bookmark added successfully")
@@ -31,17 +33,11 @@ public class BookMarkService {
         }
     }
 
-    public ResponseEntity<CommonApiResponse> getAllBookmarks() {
+    public ResponseEntity<List> getAllBookmarks() {
         try {
-            return ResponseEntity.ok(CommonApiResponse.builder()
-                    .message("Bookmarks fetched successfully")
-                    .data(bookmarksList)
-                    .build());
+            return ResponseEntity.ok(bookmarksList);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body((CommonApiResponse.builder()
-                    .message("Error fetching bookmarks")
-                    .error(e)
-                    .build()));
+            return ResponseEntity.status(500).body(new ArrayList<>());
         }
     }
 
@@ -77,7 +73,7 @@ public class BookMarkService {
             updatedBookMark.setTitle(bookMark.getTitle());
             updatedBookMark.setDescription(bookMark.getDescription());
             updatedBookMark.setUrl(bookMark.getUrl());
-            updatedBookMark.setCreatedDate(new Date().toString());
+            updatedBookMark.setCreatedDate(LocalDate.now());
             return ResponseEntity.ok(CommonApiResponse.builder()
                     .message("Bookmark updated successfully")
                     .data(Collections.singletonList(updatedBookMark))
